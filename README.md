@@ -16,7 +16,7 @@ public:
         std::cout << "Buffer olusturuldu, boyut: " << size << std::endl;
     }
 
-    // HATA: Destructor eksik! .(Memory leak - AI bunu kesinlikle raporlamali)
+    // HATA: Destructor eksik!. .(Memory leak - AI bunu kesinlikle raporlamali)
     // ~DataBuffer() { delete[] buffer; }
 
     void writeData(int index, int value) {
