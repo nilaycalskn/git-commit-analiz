@@ -37,7 +37,7 @@ int main() {
     myBuf.writeData(0, 100);
     myBuf.writeData(1, 200);
     
-    // AI buradaki tehlikeyi fark edecektir.
+    // AI buradaki tehlikeyi fark  edecektir.
     myBuf.writeData(10, 500); 
 
     myBuf.printBuffer();
