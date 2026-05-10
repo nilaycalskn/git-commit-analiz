@@ -1,0 +1,37 @@
+# Git Commit Analizi ve Kod Kalitesi Raporlama Sistemi
+
+## 📋 Proje Özeti
+Bu proje, GitHub üzerindeki yazılım projelerinde yapılan commit'lerin otomatik olarak analiz edilmesi ve kod kalitesi raporlarının oluşturulmasını sağlar.
+
+## 🛠️ Kullanılan Teknolojiler
+- **n8n** - Workflow otomasyon platformu
+- **GitHub API** - Commit verilerini çekme
+- **OpenAI GPT-4** - Kod kalitesi analizi
+- **Google Sheets API** - Veritabanı ve raporlama
+
+## 📊 Sistem Mimarisi
+1. **GitHub Trigger** - Commit olaylarını yakalar
+2. **HTTP Request** - GitHub API'den detayları çeker
+3. **Message a Model (AI)** - OpenAI ile analiz yapar
+4. **Append Row in Sheet** - Google Sheets'e kaydeder
+
+## 📄 Raporlar
+- [Türkçe IEEE Format Rapor](raporlar/Git_Commit_Analiz_Raporu_TURKCE_IEEE.docx)
+- [English IEEE Format Report](raporlar/Git_Commit_Analiz_Raporu_INGILIZCE_IEEE.docx)
+
+## 📊 Canlı Veritabanı (Google Sheets)
+
+Projenin canlı analiz sonuçlarına buradan ulaşabilirsiniz:
+
+- [🔗 Kod Analiz Raporu - Canlı Veri](https://docs.google.com/spreadsheets/d/1DBYUICgzO5P1D3-pXCRzZek_HbPXgEKxzl9HSPAnwEk/edit?usp=sharing)
+
+> Not: Veriler otomatik olarak n8n workflow'u tarafından güncellenmektedir.
+## 🚀 Nasıl Çalışır?
+1. GitHub'a push yapılır
+2. n8n webhook tetiklenir
+3. Commit detayları çekilir
+4. AI analiz yapar
+5. Sonuçlar Google Sheets'e kaydedilir
+
+## 👤 Yazar
+**Nilay Çalışkan** - Kastamonu Üniversitesi, Bilgisayar Mühendisliği
