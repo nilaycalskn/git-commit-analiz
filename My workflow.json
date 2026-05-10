@@ -1,0 +1,230 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "owner": {
+          "__rl": true,
+          "value": "nilaycalskn",
+          "mode": "list",
+          "cachedResultName": "nilaycalskn",
+          "cachedResultUrl": "https://github.com/nilaycalskn"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "git-commit-analiz",
+          "mode": "list",
+          "cachedResultName": "git-commit-analiz",
+          "cachedResultUrl": "https://github.com/nilaycalskn/git-commit-analiz"
+        },
+        "events": [
+          "push"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.githubTrigger",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "404d5e6b-d352-46f8-81bc-cf94a69fa5eb",
+      "name": "Github Trigger",
+      "webhookId": "ddbcf7ce-452d-497b-95c6-89e7556cfab9",
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "QtWnImZobiZeLc2O",
+          "name": "GitHub OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Lütfen şu kod değişikliğini analiz et: {{ $json.files[0].patch }}. Bu koda 10 üzerinden bir kalite puanı ver ve varsa güvenlik açıklarını belirt."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        512,
+        0
+      ],
+      "id": "b95de69c-ae22-4e62-8e62-266b85ddb559",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "RggdhjM5AifDaPkW",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.github.com/repos/nilaycalskn/git-commit-analiz/commits",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.v3+json"
+            },
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d46b8c9e-b739-40f8-8dc3-e430045aeaec",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "l7uJSivwF68HNYx0",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1DBYUICgzO5P1D3-pXCRzZek_HbPXgEKxzl9HSPAnwEk",
+          "mode": "list",
+          "cachedResultName": "kod_analiz",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DBYUICgzO5P1D3-pXCRzZek_HbPXgEKxzl9HSPAnwEk/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1DBYUICgzO5P1D3-pXCRzZek_HbPXgEKxzl9HSPAnwEk/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "tarih": "={{ $now.format('YYYY-MM-DD HH:mm') }}",
+            "commit": "={{ $('HTTP Request').item.json.commit.message }}",
+            "analiz": "={{ $json.output[0].content[0].text }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "tarih",
+              "displayName": "tarih",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "commit",
+              "displayName": "commit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "analiz",
+              "displayName": "analiz",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        976,
+        0
+      ],
+      "id": "b0075a51-7d7f-47e0-86a5-7bfa0acdbe22",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "oTDdgECzedZvoILn",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Github Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "543423f8-ef77-4141-87c1-5b509277822d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fe618777c41391fa11d70435d38ea32b3e9abc8d685f1d33330a48d37d0ffba0"
+  },
+  "id": "vmdAqL82k5iBE1ST",
+  "tags": []
+}
